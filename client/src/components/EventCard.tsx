@@ -1,4 +1,5 @@
 import {
+  Activity,
   Bell,
   BellRing,
   CalendarClock,
@@ -30,6 +31,7 @@ export default function EventCard({
   mustWatch,
   reminder,
   onOpen,
+  onOpenLive,
   onToggleMustWatch,
   onToggleReminder,
   compact = false,
@@ -39,6 +41,7 @@ export default function EventCard({
   mustWatch: boolean;
   reminder?: number;
   onOpen: () => void;
+  onOpenLive: () => void;
   onToggleMustWatch: () => void;
   onToggleReminder: () => void;
   compact?: boolean;
@@ -80,6 +83,10 @@ export default function EventCard({
           <ViewIcon size={15} />
           <div><strong>{view.title}</strong><span>{event.provider ? `${event.provider}${event.channel ? ` · ${event.channel}` : ""} · ` : ""}{event.freshness}</span></div>
         </div>
+        <button
+          className="match-live-link"
+          onClick={(clickEvent) => { clickEvent.stopPropagation(); onOpenLive(); }}
+        ><Activity size={14} />{isPostponed || isTbd ? "Match Center" : "Live Center"}</button>
         {event.overlapGroup && <span className="overlap-tag">OVERLAP WINDOW</span>}
       </div>
       <div className="match-actions">

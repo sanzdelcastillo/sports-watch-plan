@@ -128,17 +128,17 @@ export function WatchPlanPage() {
         </section>
 
         <div className="date-ribbon" aria-label="Date overview">
-          {[{ day: "FRI", date: "11", count: 0 }, { day: "SAT", date: "12", count: 4 }, { day: "SUN", date: "13", count: 3 }, { day: "MON", date: "14", count: 0 }, { day: "TUE", date: "15", count: 1 }].map((date, index) => (
+          {[{ day: "FRI", date: "11", count: 0 }, { day: "SAT", date: "12", count: 5 }, { day: "SUN", date: "13", count: 3 }, { day: "MON", date: "14", count: 0 }, { day: "TUE", date: "15", count: 1 }].map((date, index) => (
             <button key={date.day} className={index === 1 ? "active" : ""} onClick={() => toast.info(`${date.day} ${date.date}: ${date.count || "No"} followed matches in this scenario`)}>
               <span>{date.day}</span><strong>{date.date}</strong><i>{date.count || "—"}</i>
             </button>
           ))}
         </div>
 
-        <section className="live-entry" aria-label="Simulated live match">
-          <div className="live-entry-status"><i /><span>LIVE DEMO</span><strong>26:49</strong></div>
-          <div className="live-entry-match"><span>LA LIGA</span><h2>Valencia <em>0</em><small>—</small><em>2</em> Barcelona</h2><p>Score, key events, stats, play-by-play, and viewing context.</p></div>
-          <button onClick={() => navigate("/live/valencia-barcelona")}><Activity size={17} /> Follow live <ArrowRight size={15} /></button>
+        <section className="live-entry" aria-label="Live Center available for every match">
+          <div className="live-entry-status"><i /><span>LIVE DEMO</span><strong>63:12</strong></div>
+          <div className="live-entry-match"><span>AVAILABLE FOR EVERY MATCH</span><h2>Arsenal <em>1</em><small>—</small><em>1</em> Chelsea</h2><p>Every schedule card and match detail now opens its own score, events, stats, and viewing context.</p></div>
+          <button onClick={() => navigate("/live/arsenal-chelsea")}><Activity size={17} /> Follow live <ArrowRight size={15} /></button>
         </section>
 
         <section className="plan-layout">
@@ -177,6 +177,7 @@ export function WatchPlanPage() {
                       mustWatch={prototype.mustWatch.includes(event.id)}
                       reminder={prototype.reminders[event.id]}
                       onOpen={() => navigate(`/event/${event.id}`)}
+                      onOpenLive={() => navigate(`/live/${event.id}`)}
                       onToggleMustWatch={() => {
                         prototype.toggleMustWatch(event.id);
                         toast.success(prototype.mustWatch.includes(event.id) ? "Removed from must-watch" : "Added to must-watch", { description: `${event.home} vs ${event.away}` });
@@ -267,7 +268,7 @@ export function EventDetailPage() {
           </div>
 
           <aside className="event-actions-panel">
-            <section><span>PLAN THIS MATCH</span><button className={`plan-action ${reminder !== undefined ? "active" : ""}`} disabled={!canRemind} onClick={() => {
+            <section><span>PLAN THIS MATCH</span><button className="plan-action live-center-action" onClick={() => navigate(`/live/${event.id}`)}><Activity size={18} /><span><strong>Open Live Center</strong><small>Score, incidents, stats, and viewing</small></span></button><button className={`plan-action ${reminder !== undefined ? "active" : ""}`} disabled={!canRemind} onClick={() => {
               if (reminder !== undefined) prototype.setReminder(event.id);
               else prototype.setReminder(event.id, 30);
               toast.success(reminder !== undefined ? "Reminder removed" : "Reminder set", { description: reminder !== undefined ? "No notification will be sent." : "30 minutes before kickoff in this prototype." });
@@ -305,7 +306,7 @@ export function StateLabPage() {
   const [, navigate] = useLocation();
   const prototype = usePrototype();
   const [mode, setMode] = useState<"cards" | "loading" | "empty" | "error">("cards");
-  return <AppShell><main className="content-page state-page"><PrototypeNotice /><header className="content-hero"><div><p>VALIDATION TOOL</p><h1>Every state,<br />on purpose.</h1></div><p>This internal gallery lets the team compare normal, uncertain, revised, and failure states without waiting for live data to produce them.</p></header><div className="lab-controls">{(["cards", "loading", "empty", "error"] as const).map((item) => <button key={item} className={mode === item ? "active" : ""} onClick={() => setMode(item)}>{item}</button>)}</div>{mode === "cards" && <section className="state-gallery">{demoEvents.map((event) => <div key={event.id}><p>{event.status.replaceAll("_", " ")} · {event.viewingState}</p><EventCard event={event} timezone={prototype.timezone} mustWatch={prototype.mustWatch.includes(event.id)} reminder={prototype.reminders[event.id]} onOpen={() => navigate(`/event/${event.id}`)} onToggleMustWatch={() => prototype.toggleMustWatch(event.id)} onToggleReminder={() => prototype.setReminder(event.id, prototype.reminders[event.id] === undefined ? 30 : undefined)} compact /></div>)}</section>}{mode === "loading" && <section className="demo-system-state"><Loader2 size={32} className="spin" /><h2>Building your Watch Plan</h2><p>Matching followed clubs and competitions, then checking viewing evidence.</p><div className="skeleton-lines"><i /><i /><i /></div></section>}{mode === "empty" && <section className="demo-system-state"><CalendarDays size={32} /><h2>No followed matches in this window</h2><p>Your follows are intact. Try a longer planning window or add another club.</p><Link href="/following">Browse clubs and competitions</Link></section>}{mode === "error" && <section className="demo-system-state error"><RefreshCcw size={32} /><h2>Viewing source unavailable</h2><p>Fixtures remain visible. Last-known viewing records are labeled with age rather than presented as newly verified.</p><button onClick={() => toast.success("Refresh simulated", { description: "The demo remains in the controlled error state." })}>Try source again</button></section>}</main></AppShell>;
+  return <AppShell><main className="content-page state-page"><PrototypeNotice /><header className="content-hero"><div><p>VALIDATION TOOL</p><h1>Every state,<br />on purpose.</h1></div><p>This internal gallery lets the team compare normal, uncertain, revised, and failure states without waiting for live data to produce them.</p></header><div className="lab-controls">{(["cards", "loading", "empty", "error"] as const).map((item) => <button key={item} className={mode === item ? "active" : ""} onClick={() => setMode(item)}>{item}</button>)}</div>{mode === "cards" && <section className="state-gallery">{demoEvents.map((event) => <div key={event.id}><p>{event.status.replaceAll("_", " ")} · {event.viewingState}</p><EventCard event={event} timezone={prototype.timezone} mustWatch={prototype.mustWatch.includes(event.id)} reminder={prototype.reminders[event.id]} onOpen={() => navigate(`/event/${event.id}`)} onOpenLive={() => navigate(`/live/${event.id}`)} onToggleMustWatch={() => prototype.toggleMustWatch(event.id)} onToggleReminder={() => prototype.setReminder(event.id, prototype.reminders[event.id] === undefined ? 30 : undefined)} compact /></div>)}</section>}{mode === "loading" && <section className="demo-system-state"><Loader2 size={32} className="spin" /><h2>Building your Watch Plan</h2><p>Matching followed clubs and competitions, then checking viewing evidence.</p><div className="skeleton-lines"><i /><i /><i /></div></section>}{mode === "empty" && <section className="demo-system-state"><CalendarDays size={32} /><h2>No followed matches in this window</h2><p>Your follows are intact. Try a longer planning window or add another club.</p><Link href="/following">Browse clubs and competitions</Link></section>}{mode === "error" && <section className="demo-system-state error"><RefreshCcw size={32} /><h2>Viewing source unavailable</h2><p>Fixtures remain visible. Last-known viewing records are labeled with age rather than presented as newly verified.</p><button onClick={() => toast.success("Refresh simulated", { description: "The demo remains in the controlled error state." })}>Try source again</button></section>}</main></AppShell>;
 }
 
 function NotFoundPanel() {
