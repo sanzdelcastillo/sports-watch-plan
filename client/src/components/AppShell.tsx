@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
-import { Bell, CalendarDays, EyeOff, Flag, FlaskConical, Settings, ShieldCheck } from "lucide-react";
+import { Activity, Bell, CalendarDays, EyeOff, Flag, FlaskConical, Settings, ShieldCheck } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { timezoneShort } from "@/data/demo";
 import { usePrototype } from "@/hooks/usePrototype";
 
 const navigation = [
   { href: "/", label: "Watch Plan", icon: CalendarDays },
+  { href: "/live", label: "Live Center", icon: Activity },
   { href: "/following", label: "Following", icon: Flag },
   { href: "/states", label: "State Lab", icon: FlaskConical },
   { href: "/settings", label: "Settings", icon: Settings },

@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ErrorBoundary from "./components/ErrorBoundary";
+import LiveCenterPage from "./pages/LiveCenter";
 import {
   EventDetailPage,
   FollowingPage,
@@ -17,6 +18,8 @@ function App() {
         <Toaster position="top-center" richColors />
         <Switch>
           <Route path="/" component={WatchPlanPage} />
+          <Route path="/live" component={LiveCenterPage} />
+          <Route path="/live/:id" component={LiveCenterPage} />
           <Route path="/event/:id" component={EventDetailPage} />
           <Route path="/following" component={FollowingPage} />
           <Route path="/states" component={StateLabPage} />

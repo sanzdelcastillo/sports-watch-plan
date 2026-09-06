@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
 import {
+  Activity,
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
@@ -133,6 +134,12 @@ export function WatchPlanPage() {
             </button>
           ))}
         </div>
+
+        <section className="live-entry" aria-label="Simulated live match">
+          <div className="live-entry-status"><i /><span>LIVE DEMO</span><strong>26:49</strong></div>
+          <div className="live-entry-match"><span>LA LIGA</span><h2>Valencia <em>0</em><small>—</small><em>2</em> Barcelona</h2><p>Score, key events, stats, play-by-play, and viewing context.</p></div>
+          <button onClick={() => navigate("/live/valencia-barcelona")}><Activity size={17} /> Follow live <ArrowRight size={15} /></button>
+        </section>
 
         <section className="plan-layout">
           <div className="plan-feed-column">
