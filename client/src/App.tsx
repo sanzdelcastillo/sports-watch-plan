@@ -1,7 +1,13 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { DirectionComparison, DirectionDetail } from "./pages/DirectionReview";
+import {
+  EventDetailPage,
+  FollowingPage,
+  SettingsPage,
+  StateLabPage,
+  WatchPlanPage,
+} from "./pages/ProductPrototype";
 import { Route, Switch } from "wouter";
 
 function App() {
@@ -10,11 +16,12 @@ function App() {
       <TooltipProvider>
         <Toaster position="top-center" richColors />
         <Switch>
-          <Route path="/" component={DirectionComparison} />
-          <Route path="/direction/editorial">{() => <DirectionDetail id="editorial" />}</Route>
-          <Route path="/direction/planner">{() => <DirectionDetail id="planner" />}</Route>
-          <Route path="/direction/command">{() => <DirectionDetail id="command" />}</Route>
-          <Route component={DirectionComparison} />
+          <Route path="/" component={WatchPlanPage} />
+          <Route path="/event/:id" component={EventDetailPage} />
+          <Route path="/following" component={FollowingPage} />
+          <Route path="/states" component={StateLabPage} />
+          <Route path="/settings" component={SettingsPage} />
+          <Route component={WatchPlanPage} />
         </Switch>
       </TooltipProvider>
     </ErrorBoundary>
